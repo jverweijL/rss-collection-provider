@@ -1,0 +1,15 @@
+Bundle-Name: rss-collection-provider
+Bundle-SymbolicName: com.liferay.demo.info.collection.provider
+Bundle-Version: 1.0.0
+Provide-Capability:\
+    liferay.language.resources;\
+        resource.bundle.base.name="content.Language"
+Import-Package: \
+	!org.apache.xml.resolver*,\
+	!org.apache.avalon*,\
+    !org.apache.log*,\
+    !com.google.gson*,\
+    !org.apache.tapestry5.json,\
+    !org.codehaus.jettison.json,\
+    !org.slf4j.impl,\
+	*
