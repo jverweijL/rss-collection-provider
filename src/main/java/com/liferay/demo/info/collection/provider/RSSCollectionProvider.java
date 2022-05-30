@@ -1,5 +1,8 @@
 package com.liferay.demo.info.collection.provider;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.liferay.info.collection.provider.CollectionQuery;
@@ -24,18 +27,30 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author jverweij
  */
 @Component(
-	immediate = true,
-	property = {
-		// TODO enter required service properties
-	},
-	service = InfoCollectionProvider.class
+		immediate = true,
+		property = {
+				// TODO enter required service properties
+		},
+		service = InfoCollectionProvider.class
 )
 public class RSSCollectionProvider implements InfoCollectionProvider<News> {
+
+	CacheLoader<String, Object> loader = new CacheLoader<String, Object>() {
+		@Override
+		public String load(String key) {
+			return key.toUpperCase();
+		}
+	};
+
+	LoadingCache<String, Object> cache = CacheBuilder.newBuilder()
+			.expireAfterWrite(2, TimeUnit.HOURS)
+			.build(loader);
 
 	@Override
 	public String getLabel(Locale locale) {
@@ -44,7 +59,9 @@ public class RSSCollectionProvider implements InfoCollectionProvider<News> {
 
 	@Override
 	public InfoPage<News> getCollectionInfoPage(CollectionQuery collectionQuery) {
-		List<News> news = this.getNewsItems("https://www.nu.nl/rss");
+		String url = "https://www.carecreations.basf.com/rssfeed.aspx";
+		//String url = "https://www.nu.nl/rss";
+		List<News> news = this.getNewsItems(url);
 
 		Pagination pagination = collectionQuery.getPagination();
 
@@ -58,8 +75,12 @@ public class RSSCollectionProvider implements InfoCollectionProvider<News> {
 		List<News> news = new ArrayList();
 		Integer id = 0;
 
-		//TODO do some caching here!!!
-		String xml = this.getRequest(RequestBuilder.get(url).build());
+		String xml = (String) cache.getIfPresent("rssresponse");
+		if (xml == null) {
+			xml = this.getRequest(RequestBuilder.get(url).build());
+			cache.put("rssresponse",xml);
+		}
+
 		JSONObject jsonObject = XML.toJSONObject(xml);
 		System.out.println(jsonObject.toString(2));
 

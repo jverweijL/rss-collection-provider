@@ -15,6 +15,7 @@ dependencies {
 	compileInclude group: 'com.jayway.jsonpath', name: 'json-path', version: '2.6.0'
 
 
-
+	// https://mvnrepository.com/artifact/com.google.guava/guava
+	compileInclude group: 'com.google.guava', name: 'guava', version: '31.1-jre'
 
 }

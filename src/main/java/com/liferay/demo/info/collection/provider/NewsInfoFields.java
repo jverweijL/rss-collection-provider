@@ -6,42 +6,51 @@ import com.liferay.info.field.type.TextInfoFieldType;
 import com.liferay.info.localized.InfoLocalizedValue;
 
 public interface NewsInfoFields {
-    public final InfoField<ImageInfoFieldType> imageInfoField =
-            InfoField.builder(
-            ).infoFieldType(
-                    ImageInfoFieldType.INSTANCE
-            ).name(
-                    "image"
-            ).labelInfoLocalizedValue(
-                    InfoLocalizedValue.localize(News.class, "image")
-            ).build();
 
-    public final InfoField<TextInfoFieldType> nameInfoField = InfoField.builder(
-    ).infoFieldType(
+    InfoField<ImageInfoFieldType>
+            imageInfoField = BuilderHolder._builder.infoFieldType(
+            ImageInfoFieldType.INSTANCE
+    ).name(
+            "image"
+    ).labelInfoLocalizedValue(
+            InfoLocalizedValue.localize(
+                    News.class, "image")
+    ).build();
+
+    InfoField<TextInfoFieldType>
+            nameInfoField = BuilderHolder._builder.infoFieldType(
             TextInfoFieldType.INSTANCE
     ).name(
             "name"
     ).labelInfoLocalizedValue(
-            InfoLocalizedValue.localize(News.class, "name")
+            InfoLocalizedValue.localize(
+                    News.class, "name")
     ).build();
 
-    public final InfoField<TextInfoFieldType> descriptionInfoField = InfoField.builder(
-    ).infoFieldType(
+    InfoField<TextInfoFieldType>
+            descriptionInfoField = BuilderHolder._builder.infoFieldType(
             TextInfoFieldType.INSTANCE
     ).name(
             "description"
     ).labelInfoLocalizedValue(
-            InfoLocalizedValue.localize(News.class, "description")
+            InfoLocalizedValue.localize(
+                    News.class, "description")
     ).build();
 
-    public final InfoField<TextInfoFieldType> linkInfoField = InfoField.builder(
-    ).infoFieldType(
+    InfoField<TextInfoFieldType>
+            linkInfoField = BuilderHolder._builder.infoFieldType(
             TextInfoFieldType.INSTANCE
     ).name(
             "link"
     ).labelInfoLocalizedValue(
-            InfoLocalizedValue.localize(News.class, "link")
+            InfoLocalizedValue.localize(
+                    News.class, "link")
     ).build();
 
+    class BuilderHolder {
 
+        private static final InfoField.NamespacedBuilder _builder =
+                InfoField.builder(News.class.getSimpleName());
+
+    }
 }
